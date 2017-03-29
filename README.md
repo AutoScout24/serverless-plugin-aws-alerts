@@ -1,8 +1,4 @@
 # Serverless AWS Alerts Plugin
-  [![NPM version][npm-image]][npm-url]
-  [![Build Status][travis-image]][travis-url]
-  [![Dependency Status][daviddm-image]][daviddm-url]
-  [![Coverage percentage][coveralls-image]][coveralls-url]
 
 A Serverless plugin to easily add CloudWatch alarms to functions
 
@@ -61,6 +57,9 @@ functions:
         evaluationPeriods: 1
         comparisonOperator: GreaterThanThreshold
 ```
+
+## Global Alarms
+Some metrics are not related to single Lambda functions, but for the whole service e.g. API Gateway 5XX errors or DynamoDB metrics. If you want to create alrams for those metrics, just put them in the `global` area.
 
 ## SNS Topics
 
@@ -158,6 +157,10 @@ definitions:
 ```
 
 ## License
+
+## TODOs
+- add default definition for API Gateway 5xx and 4xx
+- check corner cases for the global alarms (missing configuration etc.)
 
 MIT © [A Cloud Guru](https://acloud.guru/)
 
