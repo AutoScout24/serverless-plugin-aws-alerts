@@ -11,10 +11,16 @@
     "test:cover": "jest --coverage"
   },
   "repository": {
-    "url": "https://github.com/ACloudGuru/serverless-plugin-aws-alerts.git",
+    "url": "https://github.com/AutoScout24/serverless-plugin-aws-alerts",
     "type": "git"
   },
-  "author": "John McKim <john@acloud.guru>",
+  "publishConfig": {
+    "registry": "http://npm.rz.is"
+  },
+  "author": {
+    "name": "Team Umzug",
+    "email": "#IS24-Umzug-Projekt-ds@scout24.com"
+  },
   "license": "MIT",
   "dependencies": {
     "lodash": "^4.16.6"
@@ -26,6 +32,10 @@
     "eslint-plugin-node": "^4.0.0",
     "eslint-plugin-promise": "^3.4.1",
     "eslint-plugin-standard": "^2.0.1",
-    "jest": "^19.0.2"
+    "jest": "^19.0.2",
+    "jest-teamcity-reporter": "0.5.0"
+  },
+  "jest": {
+    "testResultsProcessor": "jest-teamcity-reporter"
   }
 }
