@@ -154,21 +154,43 @@ definitions:
     period: 60
     evaluationPeriods: 1
     comparisonOperator: GreaterThanThreshold
+  apiGateway5xx:
+    namespace: 'AWS/ApiGateway'
+    metric: 5XXError
+    threshold: 1
+    statistic: Sum
+    period: 60,
+    evaluationPeriods: 1,
+    comparisonOperator: 'GreaterThanThreshold'
+  apiGateway4xx:
+    namespace: 'AWS/ApiGateway'
+    metric: 4XXError
+    threshold: 10
+    statistic: Sum
+    period: 60
+    evaluationPeriods: 1
+    comparisonOperator: GreaterThanThreshold
+  dynamoDbReadThrottleEvents:
+    namespace: 'AWS/DynamoDB'
+    metric: ReadThrottleEvents
+    threshold: 20,
+    statistic: Sum
+    period: 300,
+    evaluationPeriods: 1,
+    comparisonOperator: GreaterThanThreshold
+  dynamoDbWriteThrottleEvents:
+    namespace: 'AWS/DynamoDB'
+    metric: WriteThrottleEvents
+    threshold: 20
+    statistic: Sum
+    period: 300
+    evaluationPeriods: 1
+    comparisonOperator: GreaterThanThreshold
 ```
 
 ## License
 
 ## TODOs
-- check corner cases for the global alarms (missing configuration etc.)
+- maybe introduce a scope `tables` next to `functions` and `global` for dynamoDB tables. Handle dynamoDB similar to functions e.g. search the resources for dbs and merge those definitions. 
 
 MIT © [A Cloud Guru](https://acloud.guru/)
-
-
-[npm-image]: https://badge.fury.io/js/serverless-plugin-aws-alerts.svg
-[npm-url]: https://npmjs.org/package/serverless-plugin-aws-alerts
-[travis-image]: https://travis-ci.org/ACloudGuru/serverless-plugin-aws-alerts.svg?branch=master
-[travis-url]: https://travis-ci.org/ACloudGuru/serverless-plugin-aws-alerts
-[daviddm-image]: https://david-dm.org/ACloudGuru/serverless-plugin-aws-alerts.svg?theme=shields.io
-[daviddm-url]: https://david-dm.org/ACloudGuru/serverless-plugin-aws-alerts
-[coveralls-image]: https://coveralls.io/repos/ACloudGuru/serverless-plugin-aws-alerts/badge.svg
-[coveralls-url]: https://coveralls.io/r/ACloudGuru/serverless-plugin-aws-alerts
