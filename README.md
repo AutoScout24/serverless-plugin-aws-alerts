@@ -159,7 +159,6 @@ definitions:
 ## License
 
 ## TODOs
-- add default definition for API Gateway 5xx and 4xx
 - check corner cases for the global alarms (missing configuration etc.)
 
 MIT © [A Cloud Guru](https://acloud.guru/)

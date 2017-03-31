@@ -183,7 +183,7 @@ describe('#index', function () {
 					statistic: 'Sum',
 					period: 60,
 					evaluationPeriods: 1,
-					comparisonOperator: 'GreaterThanThreshold',
+					comparisonOperator: 'GreaterThanThreshold'
 				},
 				functionErrors: {
 					namespace: 'AWS/Lambda',
@@ -192,7 +192,7 @@ describe('#index', function () {
 					statistic: 'Maximum',
 					period: 300,
 					evaluationPeriods: 1,
-					comparisonOperator: 'GreaterThanThreshold',
+					comparisonOperator: 'GreaterThanThreshold'
 				},
 				functionDuration: {
 					namespace: 'AWS/Lambda',
@@ -201,7 +201,7 @@ describe('#index', function () {
 					statistic: 'Average',
 					period: 60,
 					evaluationPeriods: 1,
-					comparisonOperator: 'GreaterThanThreshold',
+					comparisonOperator: 'GreaterThanThreshold'
 				},
 				functionThrottles: {
 					namespace: 'AWS/Lambda',
@@ -210,7 +210,43 @@ describe('#index', function () {
 					statistic: 'Sum',
 					period: 60,
 					evaluationPeriods: 1,
-					comparisonOperator: 'GreaterThanThreshold',
+					comparisonOperator: 'GreaterThanThreshold'
+				},
+				apiGateway5xx: {
+					namespace: 'AWS/ApiGateway',
+					metric: '5XXError',
+					threshold: 1,
+					statistic: 'Sum',
+					period: 60,
+					evaluationPeriods: 1,
+					comparisonOperator: 'GreaterThanThreshold'
+				},
+				apiGateway4xx: {
+					namespace: 'AWS/ApiGateway',
+					metric: '4XXError',
+					threshold: 10,
+					statistic: 'Sum',
+					period: 60,
+					evaluationPeriods: 1,
+					comparisonOperator: 'GreaterThanThreshold'
+				},
+				dynamoDbReadThrottleEvents: {
+					namespace: 'AWS/DynamoDB',
+					metric: 'ReadThrottleEvents',
+					threshold: 20,
+					statistic: 'Sum',
+					period: 300,
+					evaluationPeriods: 1,
+					comparisonOperator: 'GreaterThanThreshold'
+				},
+				dynamoDbWriteThrottleEvents: {
+					namespace: 'AWS/DynamoDB',
+					metric: 'WriteThrottleEvents',
+					threshold: 20,
+					statistic: 'Sum',
+					period: 300,
+					evaluationPeriods: 1,
+					comparisonOperator: 'GreaterThanThreshold'
 				},
 				customDefinition: {
 					namespace: 'AWS/Lambda',

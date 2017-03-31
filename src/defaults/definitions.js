@@ -1,6 +1,9 @@
 'use strict';
 
-const lambdaNamespace = 'AWS/Lambda';
+const 
+    lambdaNamespace = 'AWS/Lambda', 
+    apiGatewayNamespace = 'AWS/ApiGateway',
+    dynamoDBNamespace = 'AWS/DynamoDB';
 
 module.exports = {
   functionInvocations: {
@@ -38,5 +41,41 @@ module.exports = {
     period: 60,
     evaluationPeriods: 1,
     comparisonOperator: 'GreaterThanThreshold',
+  },
+  apiGateway5xx: {
+    namespace: apiGatewayNamespace,
+    metric: '5XXError',
+    threshold: 1,
+    statistic: 'Sum',
+    period: 60,
+    evaluationPeriods: 1,
+    comparisonOperator: 'GreaterThanThreshold'
+  },
+  apiGateway4xx: {
+    namespace: apiGatewayNamespace,
+    metric: '4XXError',
+    threshold: 10,
+    statistic: 'Sum',
+    period: 60,
+    evaluationPeriods: 1,
+    comparisonOperator: 'GreaterThanThreshold'
+  },
+  dynamoDbReadThrottleEvents: {
+    namespace: dynamoDBNamespace,
+    metric: 'ReadThrottleEvents',
+    threshold: 20,
+    statistic: 'Sum',
+    period: 300,
+    evaluationPeriods: 1,
+    comparisonOperator: 'GreaterThanThreshold'
+  },  
+  dynamoDbWriteThrottleEvents: {
+    namespace: dynamoDBNamespace,
+    metric: 'WriteThrottleEvents',
+    threshold: 20,
+    statistic: 'Sum',
+    period: 300,
+    evaluationPeriods: 1,
+    comparisonOperator: 'GreaterThanThreshold'
   }
 };
