@@ -34,6 +34,16 @@ const pluginFactory = (alarmsConfig, s) => {
 				},
 			},
 			service: 'fooservice',
+			resources: {
+				Resources: {
+					tableOne: {
+						Type:"AWS::DynamoDB::Table"
+					},
+					tableTwo: {
+						Type:"AWS::DynamoDB::Table"
+					}
+				}
+			}
 		},
 		getProvider: () => {
 			return {
@@ -125,6 +135,34 @@ describe('#index', function () {
 			expect(() => {
 				plugin.getGlobalAlarms({});
 			}).toThrow();
+		});
+	});
+	
+	describe('getTableAlarms', () => {
+		const config = {
+			definitions: {
+				customAlarm: {
+					namespace: 'AWS/Lambda',
+					metric: 'Invocations',
+					threshold: 5,
+					statistic: 'Minimum',
+					period: 120,
+					evaluationPeriods: 2,
+					comparisonOperator: 'GreaterThanThreshold',
+				}
+			},
+			tables: ['customAlarm']
+		};
+		
+		let plugin = null;
+
+		beforeEach(() => {
+			plugin = pluginFactory(config);
+		});
+
+		it('creates an alarm for each table', () => {
+			const alarms = plugin.getTableAlarms(config, config.definitions);
+			expect(alarms.length).toBe(2);
 		});
 	});
 
@@ -233,7 +271,7 @@ describe('#index', function () {
 				dynamoDbReadThrottleEvents: {
 					namespace: 'AWS/DynamoDB',
 					metric: 'ReadThrottleEvents',
-					threshold: 20,
+					threshold: 5,
 					statistic: 'Sum',
 					period: 300,
 					evaluationPeriods: 1,
@@ -242,7 +280,7 @@ describe('#index', function () {
 				dynamoDbWriteThrottleEvents: {
 					namespace: 'AWS/DynamoDB',
 					metric: 'WriteThrottleEvents',
-					threshold: 20,
+					threshold: 5,
 					statistic: 'Sum',
 					period: 300,
 					evaluationPeriods: 1,

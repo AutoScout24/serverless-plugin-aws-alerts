@@ -39,6 +39,9 @@ custom:
     function:
       - functionInvocations
       - functionDuration
+    table:
+      - dynamoDbReadThrottleEvents
+      - dynamoDbWriteThrottleEvents
 
 plugins:
   - serverless-plugin-aws-alerts
@@ -60,6 +63,9 @@ functions:
 
 ## Global Alarms
 Some metrics are not related to single Lambda functions, but for the whole service e.g. API Gateway 5XX errors or DynamoDB metrics. If you want to create alrams for those metrics, just put them in the `global` area.
+
+## table alarms
+Alarms defined here will be applied for all dynamoDb tables defined in the resources section of the serverless project.
 
 ## SNS Topics
 
@@ -173,7 +179,7 @@ definitions:
   dynamoDbReadThrottleEvents:
     namespace: 'AWS/DynamoDB'
     metric: ReadThrottleEvents
-    threshold: 20,
+    threshold: 5,
     statistic: Sum
     period: 300,
     evaluationPeriods: 1,
@@ -181,7 +187,7 @@ definitions:
   dynamoDbWriteThrottleEvents:
     namespace: 'AWS/DynamoDB'
     metric: WriteThrottleEvents
-    threshold: 20
+    threshold: 5
     statistic: Sum
     period: 300
     evaluationPeriods: 1
@@ -189,8 +195,4 @@ definitions:
 ```
 
 ## License
-
-## TODOs
-- maybe introduce a scope `tables` next to `functions` and `global` for dynamoDB tables. Handle dynamoDB similar to functions e.g. search the resources for dbs and merge those definitions. 
-
 MIT © [A Cloud Guru](https://acloud.guru/)

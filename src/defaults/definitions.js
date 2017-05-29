@@ -63,7 +63,7 @@ module.exports = {
   dynamoDbReadThrottleEvents: {
     namespace: dynamoDBNamespace,
     metric: 'ReadThrottleEvents',
-    threshold: 20,
+    threshold: 5,
     statistic: 'Sum',
     period: 300,
     evaluationPeriods: 1,
@@ -72,7 +72,7 @@ module.exports = {
   dynamoDbWriteThrottleEvents: {
     namespace: dynamoDBNamespace,
     metric: 'WriteThrottleEvents',
-    threshold: 20,
+    threshold: 5,
     statistic: 'Sum',
     period: 300,
     evaluationPeriods: 1,

@@ -28,9 +28,9 @@ class Plugin {
 		return _.merge({}, defaultDefinitions, config.definitions);
 	}
 
-	getAlarms(alarms, definitions) {
+	getAlarms(alarms, definitions, tableNames) {
 		if(!alarms) return [];
-		
+
 		return alarms.reduce((result, alarm) => {
 			if (_.isString(alarm)) {
 				const definition = definitions[alarm];
@@ -38,10 +38,21 @@ class Plugin {
 				if (!definition) {
 					throw new Error(`Alarm definition ${alarm} does not exist!`);
 				}
-
-				result.push(Object.assign({}, definition, {
-					name: alarm
-				}));
+				if (tableNames && tableNames.length !== 0) {
+					tableNames.forEach(table => {
+						result.push(Object.assign({}, definition, {
+							name: `${table}-${alarm}`,
+							dimensions: [{
+								Name: "TableName",
+								Value: table
+							}]
+						}));
+					})
+				} else {
+					result.push(Object.assign({}, definition, {
+						name: alarm
+					}));
+				}
 			} else if (_.isObject(alarm)) {
 				result.push(alarm);
 			}
@@ -56,6 +67,26 @@ class Plugin {
 
 		return this.getAlarms(config.global, definitions);
 	}
+
+	getTableAlarms(config, definitions) {
+		if (!config) throw new Error('Missing config argument');
+		if (!definitions) throw new Error('Missing definitions argument');
+
+		return this.getAlarms(config.tables, definitions, this.getTableNames());
+	}
+
+	getTableNames(){
+		const resources = this.serverless.service.resources.Resources;
+		return Object.keys(resources)
+				.map(key => {
+					return {
+						name: key,
+						value: resources[key]
+					}
+				}).filter(resource => {
+					return resource.value.Type === "AWS::DynamoDB::Table";
+				}).map(resource => resource.name);
+		}
 
 	getFunctionAlarms(functionObj, config, definitions) {
 		if (!config) throw new Error('Missing config argument');
@@ -82,12 +113,12 @@ class Plugin {
 			insufficientDataActions.push(alertTopics.insufficientData);
 		}
 
-		const namespace = definition.pattern ? 
+		const namespace = definition.pattern ?
 			this.awsProvider.naming.getStackName() :
 			definition.namespace;
 
 		let metricName, dimensions;
-		
+
 		if(!functionRef) {
 			metricName = definition.metric;
 			dimensions = definition.dimensions;
@@ -169,7 +200,7 @@ class Plugin {
 
 	getLogMetricCloudFormation(alarm, functionName, normalizedFunctionName, functionObj) {
 		if(!alarm.pattern) return {};
-		
+
 		const logMetricCFRefBase = this.naming.getLogMetricCloudFormationRef(normalizedFunctionName, alarm.name);
 		const logMetricCFRefALERT = `${logMetricCFRefBase}ALERT`;
 		const logMetricCFRefOK = `${logMetricCFRefBase}OK`;
@@ -178,7 +209,7 @@ class Plugin {
 		const metricNamespace = this.providerNaming.getStackName();
 		const logGroupName =  this.providerNaming.getLogGroupName(functionObj.name);
 		const metricName = this.naming.getPatternMetricName(alarm.metric, normalizedFunctionName);
-		
+
 		return {
 			[logMetricCFRefALERT]: {
 				Type: 'AWS::Logs::MetricFilter',
@@ -192,7 +223,7 @@ class Plugin {
 						MetricName: metricName
 					}]
 				}
-			},			
+			},
 			[logMetricCFRefOK]: {
 				Type: 'AWS::Logs::MetricFilter',
 				DependsOn: cfLogName,
@@ -213,11 +244,16 @@ class Plugin {
 		// do global only once!
 		// what happens if dimensions is empty?
 		const globalAlarms = this.getGlobalAlarms(config, definitions);
-		const alarms = globalAlarms.reduce((statements, alarm) => {
+		this.addCfResources(globalAlarms.reduce((statements, alarm) => {
 			statements[alarm.name] = this.getAlarmCloudFormation(alertTopics, alarm);
 			return statements;
-		}, {});
-		this.addCfResources(alarms);
+		}, {}));
+
+		const tableAlarms = this.getTableAlarms(config, definitions);
+		this.addCfResources(tableAlarms.reduce((statements, alarm) => {
+			statements[alarm.name] = this.getAlarmCloudFormation(alertTopics, alarm);
+			return statements;
+		}, {}));
 
 		this.serverless.service.getAllFunctions().forEach((functionName) => {
 			const functionObj = this.serverless.service.getFunction(functionName);
