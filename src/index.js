@@ -41,7 +41,7 @@ class Plugin {
 				if (tableNames && tableNames.length !== 0) {
 					tableNames.forEach(table => {
 						result.push(Object.assign({}, definition, {
-							name: `${table}-${alarm}`,
+							name: `${_.upperFirst(table)}${_.upperFirst(alarm)}`,
 							dimensions: [{
 								Name: "TableName",
 								Value: table
