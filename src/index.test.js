@@ -151,7 +151,7 @@ describe('#index', function () {
 					comparisonOperator: 'GreaterThanThreshold',
 				}
 			},
-			tables: ['customAlarm']
+			table: ['customAlarm']
 		};
 		
 		let plugin = null;

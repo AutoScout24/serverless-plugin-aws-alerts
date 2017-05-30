@@ -72,7 +72,7 @@ class Plugin {
 		if (!config) throw new Error('Missing config argument');
 		if (!definitions) throw new Error('Missing definitions argument');
 
-		return this.getAlarms(config.tables, definitions, this.getTableNames());
+		return this.getAlarms(config.table, definitions, this.getTableNames());
 	}
 
 	getTableNames(){
