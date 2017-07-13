@@ -1,0 +1,2 @@
+# Yarn lock file having public URLs with hashes should be whitelisted
+yarn.lock
