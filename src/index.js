@@ -6,7 +6,7 @@ const _ = require('lodash');
 const Naming = require('./naming');
 const defaultDefinitions = require('./defaults/definitions');
 
-class Plugin {
+class AlertPlugin {
 	constructor(serverless, options) {
 		this.serverless = serverless;
 		this.options = options;
@@ -297,4 +297,4 @@ class Plugin {
 	}
 }
 
-module.exports = Plugin;
+module.exports = AlertPlugin;
