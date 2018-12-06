@@ -17,7 +17,7 @@
     "type": "git"
   },
   "publishConfig": {
-    "registry": "http://npm.rz.is"
+    "registry": "https://fast.cloud.scout24.com/artifactory/api/npm/npm/"
   },
   "author": {
     "name": "Team Umzug",
