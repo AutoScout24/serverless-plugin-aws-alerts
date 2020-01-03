@@ -1,0 +1,20 @@
+name: Serverless Plugin AWS Alerts
+id: serverless-plugin-aws-alerts
+type: library
+product: relocation
+vertical: is24
+owners:
+  - "#IS24-Umzug-Projekt-Aurora-ds@scout24.com"
+confidentiality: public
+integrity: false
+availability: false
+exposure:
+  - non-applicable
+lifecycle: ga
+links:
+  - type: repository
+    title: GitHub Repository
+    address: https://github.com/Scout24/serverless-plugin-aws-alerts
+  - title: "FiZZ"
+    type: repository
+    address: https://relocation-fizz.fizz.cloud.scout24.com/job/Plugins/job/serverless-plugin-aws-alerts/
