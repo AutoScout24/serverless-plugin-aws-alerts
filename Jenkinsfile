@@ -30,7 +30,6 @@ pipeline {
                 echo "Releasing since commit is tagged"
                 sh 'npm version from-git'
                 sh 'npm publish'
-                sh 'git push'
            }
         }
     }
