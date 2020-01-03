@@ -25,7 +25,7 @@ pipeline {
 
         stage('Release') {
             agent { label 'deploy-node12' }
-            when { tag 'v*' }
+            when { tag "v*" }
             steps {
                 echo "Releasing since commit is tagged"
                 sh 'npm version from-git'
