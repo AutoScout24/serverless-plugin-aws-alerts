@@ -25,12 +25,10 @@ pipeline {
 
         stage('Release') {
             agent { label 'deploy-node12' }
-            when { tag "v*" }
+            when { branch "master" }
             steps {
-                echo "Releasing since commit is tagged"
-                sh 'npm version from-git'
+                echo "Releasing"
                 sh 'npm publish'
-                sh 'git push'
            }
         }
     }
